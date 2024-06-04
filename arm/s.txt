@@ -1,0 +1,46 @@
+// cmake .. -DPICO_BOARD=pico_w
+// make
+
+#include <stdio.h>
+#include <stdlib.h> 
+#include "pico/stdlib.h"
+#include "hardware/gpio.h"
+#include "pico/binary_info.h"
+#include "servo.h"
+#include <string.h>
+
+#define SERVO_PIN 2
+#define LED_PIN 3
+
+int enable=0;
+char str[50];
+
+int main(){
+    stdio_init_all();
+
+    servo_enable(SERVO_PIN);
+    
+    gpio_init(LED_PIN);
+    gpio_set_dir(LED_PIN, GPIO_OUT);
+    gpio_put(LED_PIN, 0);
+
+    while (1) {
+        scanf("%s", str);
+        printf("%s\n", str);
+
+        if (atoi(str) > 90){
+            gpio_put(LED_PIN, 1);
+        }
+        else{
+            gpio_put(LED_PIN, 0);
+        }
+        servo_set_position(SERVO_PIN, atoi(str));
+
+        sleep_ms(20);
+    }
+    return 0;
+}
+
+{   int maxValue = 2200-600;
+    setServo(servoPin, 600);
+    setMillis(servoPin, (agn * maxValue/180)+600);
